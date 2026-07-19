@@ -24,4 +24,4 @@ Every member owns exactly two notebooks — one **early-phase** (00/01/02) and o
 
 | Date | Member | Contribution |
 |---|---|---|
-| | | |
+| 2026-07-19 | Ian Schmitt | Scaffolded the repository: structure, environment config (uv + lockfile), all READMEs, and the docs set (workload plan, shared-foundation decisions, contribution and AI-use logs). |
