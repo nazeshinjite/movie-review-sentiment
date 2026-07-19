@@ -61,6 +61,7 @@ Simple rules sized for a 3-person, 7-week project — notebooks merge badly, so 
 - **`git pull` before every work session and before every push.**
 - **One notebook, one owner.** Never edit someone else's notebook — if you need a change in it, ask the owner (that is what the two weekly syncs and the group chat are for). This is what makes conflicts nearly impossible.
 - **Restart & Run All before committing a notebook**, so committed outputs match the committed code.
+- **Review before you push.** The repo bundles a Claude Code review agent: open Claude Code at the repo root and ask it to *"use the notebook-reviewer agent on notebooks/0X_*.ipynb"*. It checks reproducibility, the fairness invariants (test-split discipline, shared metrics), PEP 8, and that no API key leaked into a cell or output — and returns a prioritized fix list. Not a Claude Code user? `.claude/agents/notebook-reviewer.md` reads as a plain checklist — walk it manually.
 - Shared files (`src/shared.py`, `docs/*`) change only after a team decision — log it in `docs/decisions.md`.
 
 ## Running the pipeline
