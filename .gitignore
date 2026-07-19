@@ -1,0 +1,27 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# --- Environment ---
+.venv/
+.env
+
+# --- Data (large / regenerable — never commit the data itself) ---
+# Ignore the directory CONTENTS but keep the folder via .gitkeep, so the
+# structure exists on a fresh clone; notebook 00 repopulates it.
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# --- Model artifacts (large / regenerable) — keep the README only ---
+artifacts/*
+!artifacts/README.md
+
+# --- OS ---
+.DS_Store
+
+# outputs/{figures,tables,predictions} ARE committed (paper deliverables +
+# cross-lane handoff) and are intentionally not ignored here.

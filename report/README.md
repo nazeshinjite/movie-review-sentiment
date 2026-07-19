@@ -1,0 +1,34 @@
+# report
+
+The final paper's home in the repo. The ~10-page APA 7 paper is the largest graded deliverable and runs through Turnitin.
+
+**Drafting happens in Google Docs**, not in git — collaborative editing, comments, and Turnitin are all easier there, and prose does not diff cleanly. This folder holds:
+
+- A link to the live Google Doc (paste it below).
+- The **final exported PDF** (`final-paper.pdf`) once the paper is frozen, committed so the repo is a complete record of the submission.
+- The paper outline, if the team wants it under version control.
+
+## Live draft
+
+- Google Doc: `[paste link here]`
+- Template to start from: `USD-MS-AAI/_templates/paper-outline.md`
+
+## Required paper elements (from the 7.2 rubric)
+
+- Purpose, goals, scope; references to the work the algorithms build on; statement of whether each algorithm is adapted or new; ties to course techniques.
+- Clear specification of both algorithms with theory, evaluation, and **critique**; the comparison presented **graphically**.
+- An **appendix listing each member and their detailed contributions** (assembled from [`../docs/contributions.md`](../docs/contributions.md)).
+- AI-use disclosure (from [`../docs/ai-use-log.md`](../docs/ai-use-log.md)).
+
+## Section ownership (Lean plan)
+
+| Section | Owner |
+|---|---|
+| Introduction & related work | T3 |
+| Data & EDA | T1 |
+| Methods: preprocessing + LR | T1 |
+| Methods: NN + evaluation | T2 |
+| Results | T2 |
+| Divergence + LLM adjudicator | T3 |
+| Discussion, limitations, conclusion | T3 |
+| Appendix (contributions, AI disclosure) | All; T3 assembles |

@@ -1,0 +1,40 @@
+[project]
+name = "movie-review-sentiment"
+version = "0.1.0"
+description = "AAI-501 final team project: classifying IMDB movie-review sentiment (logistic regression vs. feed-forward neural network) as a feature-generation signal for film recommendation."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy",
+    "pandas",
+    "scipy",
+    "scikit-learn",
+    "matplotlib",
+    "datasets",
+    "joblib",
+    "pyarrow",
+    "python-dotenv",
+]
+
+# Deferred to build-time (added with `uv add` when the owning notebook is built):
+#   tensorflow  -> notebook 03 (feed-forward neural network, Keras)
+#   openai      -> notebook 05 (OpenAI-compatible LLM-as-judge client)
+# Kept out of the initial lockfile so the heaviest / most platform-fragile
+# dependencies do not land before the code that needs them.
+
+[dependency-groups]
+dev = [
+    "ipykernel",
+    "jupyter",
+    "ruff",
+]
+
+[tool.uv]
+# Virtual project: install the dependencies but do not build/install this
+# repo as a package. src/shared.py is imported via a sys.path bootstrap in
+# each notebook, not as an installed package.
+package = false
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
