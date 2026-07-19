@@ -8,7 +8,7 @@ Notebooks do not exist yet; they are designed and built together, one at a time.
 
 - **Parallel work.** A downstream lane loads the saved artifacts of an upstream lane instead of rerunning its expensive steps. Three people move at once.
 - **Reproducibility.** From a clean clone, running 00 → 05 regenerates every figure and number the paper reports.
-- **The fairness rules become structural.** TF-IDF is fit once (in 00) and saved, so there is no leakage; the test set lives in its own artifact and is read only on the final run, so it is touched exactly once.
+- **The fairness rules become structural.** TF-IDF is fit once (in 00) and saved, so there is no leakage. The model notebooks (02, 03) only ever see the `fit` and `val` splits — **all test-set scoring lives in notebook 04**, so the plan's "single final test run, both models, one script" is enforced by the structure, not by calendar discipline.
 - **Legible contribution.** Each owner's commits land in their own notebook.
 
 ## Ownership
@@ -26,20 +26,23 @@ The shared foundation (00) is team-owned on purpose: it is communal plumbing eve
 
 ## Handoff contract
 
-Stable join key: every row keeps its **`id`** (the review's index in `splits.parquet`), so any notebook can rehydrate review text. Every prediction file shares one schema: **`id, y_true, y_pred, y_proba_pos`** — which makes evaluation model-agnostic.
+Two canonical artifacts anchor everything: **`data/processed/splits.parquet`** (`id, text, label, split∈{fit,val,test}`) and **`artifacts/tfidf_vectorizer.joblib`** (fit on the `fit` split only). Feature matrices are *derived*, never stored: every notebook calls `shared.load_features(split)`, which loads both artifacts and transforms on the fly (seconds), so matrices can never go stale against the vectorizer.
+
+**Predictions are the interface between lanes.** Every prediction file uses one schema — **`id, y_true, y_pred, y_proba_pos`** — and joins back to review text on `id`. Anything downstream (metrics, figures, disagreements) is derived from predictions plus `splits.parquet`.
 
 | # | Notebook | Reads | Writes |
 |---|---|---|---|
-| **00** | `core` | `stanfordnlp/imdb` (Hugging Face) | `data/processed/splits.parquet` (`id, text, label, split∈{fit,val,test}`)<br>`artifacts/tfidf_vectorizer.joblib`<br>`data/processed/tfidf_{fit,val,test}.npz`<br>`data/processed/labels_{fit,val,test}.npy` |
+| **00** | `core` | `stanfordnlp/imdb` (Hugging Face) | `data/processed/splits.parquet`<br>`artifacts/tfidf_vectorizer.joblib` |
 | **01** | `eda` | `splits.parquet` | `outputs/figures/eda_*.png`<br>`outputs/tables/eda_*.csv` |
-| **02** | `logistic_regression` | `tfidf_{fit,val}.npz` + labels | `outputs/predictions/lr_{val,test}.parquet`<br>`artifacts/logreg.joblib`<br>`outputs/tables/lr_top_coefficients.csv`<br>`outputs/tables/lr_topk_results.csv` (k = 50/100/500) |
-| **03** | `neural_network` | `tfidf_{fit,val}.npz` + labels | `outputs/predictions/nn_{val,test}.parquet`<br>`artifacts/nn_model.keras`<br>`outputs/tables/nn_training_history.csv` |
-| **04** | `evaluation` | `outputs/predictions/{lr,nn}_*.parquet` | `outputs/tables/metrics_comparison.csv`<br>`outputs/figures/{roc,confusion,comparison}_*.png`<br>`outputs/predictions/disagreements_{val,test}.parquet` |
-| **05** | `divergence_judge` | `disagreements_*.parquet` + `splits.parquet` (for text) | `outputs/tables/adjudication.csv`<br>`outputs/tables/disagreement_taxonomy.csv`<br>`outputs/figures/judge_*.png` |
+| **02** | `logistic_regression` | `load_features("fit")`, `load_features("val")` | `artifacts/logreg.joblib`<br>`outputs/predictions/lr_val.parquet`<br>`outputs/tables/lr_top_coefficients.csv`<br>`outputs/tables/lr_topk_results.csv` (k = 50/100/500) |
+| **03** | `neural_network` | `load_features("fit")`, `load_features("val")` | `artifacts/nn_model.keras`<br>`outputs/predictions/nn_val.parquet`<br>`outputs/tables/nn_training_history.csv` |
+| **04** | `evaluation` | val predictions; saved models; `load_features("test")` **on the final run only** | `outputs/predictions/test_predictions.parquet` (long format: adds a `model` column)<br>`outputs/tables/metrics_comparison.csv`<br>`outputs/figures/{roc,confusion,comparison}_*.png` |
+| **05** | `divergence_judge` | prediction files + `splits.parquet` (for text) | `outputs/tables/adjudication.csv`<br>`outputs/tables/disagreement_taxonomy.csv`<br>`outputs/figures/judge_*.png` |
 
 Notes:
-- **`fit` vs `val` vs `test`.** `fit` (10,000) trains the models; `val` (5,000) tunes them; `test` (25,000) is scored once on the final run. 00 produces all three; the model notebooks predict on `val` during development and add `test` only on the single final run (Jul 29 per the plan).
-- **Disagreement set (04 → 05).** A review is a disagreement when LR and NN predict different labels. 04 exports those `id`s (with each model's label and probability); 05 rehydrates the text from `splits.parquet`, tags the hard-case type, and runs the LLM judge.
+- **`fit` vs `val` vs `test`.** `fit` (10,000) trains the models; `val` (5,000) tunes them; `test` (25,000) is scored exactly once. Notebooks 02 and 03 never load the test split — they end at a frozen model artifact plus validation predictions.
+- **The single final test run is notebook 04** (Jul 29 per the plan). It loads both frozen models, transforms the test set once, scores both models in one pass, and writes one combined `test_predictions.parquet`. Before that day, 04 is developed and validated entirely against the val prediction files.
+- **Disagreements are derived, not stored.** A disagreement is `y_pred_lr != y_pred_nn` — notebook 05 computes it in one merge from the prediction files (val predictions for week-1 judge development, `test_predictions.parquet` after the final run) and rehydrates review text from `splits.parquet`.
 
 ## Import convention
 
@@ -48,7 +51,7 @@ Each notebook imports the shared foundation from `src/shared.py` with a short pa
 ```python
 import sys, pathlib
 sys.path.insert(0, str(pathlib.Path.cwd().parent / "src"))
-from shared import SEED, PATHS, compute_metrics   # etc.
+from shared import SEED, PATHS, load_features, compute_metrics   # etc.
 ```
 
 No package install — it works on any machine after `uv sync`.

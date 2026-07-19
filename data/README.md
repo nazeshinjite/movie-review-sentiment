@@ -7,9 +7,9 @@ Datasets and derived data artifacts. **Gitignored** (`data/raw/` and `data/proce
 | Path | Contents | Produced by |
 |---|---|---|
 | `raw/` | The dataset as downloaded (Hugging Face cache / exported copy). Never edited by hand. | 00 (download) |
-| `processed/splits.parquet` | Canonical split table: `id, text, label, split∈{fit,val,test}`. The join source for all downstream text. | 00 |
-| `processed/tfidf_{fit,val,test}.npz` | Sparse TF-IDF feature matrices (SciPy `.npz`). | 00 |
-| `processed/labels_{fit,val,test}.npy` | Label vectors aligned to the matrices. | 00 |
+| `processed/splits.parquet` | Canonical split table: `id, text, label, split∈{fit,val,test}`. The join source for all downstream text and labels. | 00 |
+
+Feature matrices are **not stored** — every notebook derives them on the fly from `splits.parquet` + the fitted vectorizer via `shared.load_features(split)`, so they can never go stale.
 
 ## Dataset provenance
 
@@ -21,6 +21,6 @@ Datasets and derived data artifacts. **Gitignored** (`data/raw/` and `data/proce
 - License: see the dataset card — `[VERIFY]` and record the exact license + access date here before submission.
 - Access date: `[record on first download]`
 
-## Data budget (from the workload plan)
+## Data budget
 
-Model fitting uses a stratified, seeded subsample of the 25,000-review training pool: **10,000 fit + 5,000 validation.** The **full 25,000-review test set** is held out and scored exactly once, on the final run. EDA may describe the full corpus.
+Split sizes, seed, and the test-set policy are recorded once, in [`../docs/decisions.md`](../docs/decisions.md).

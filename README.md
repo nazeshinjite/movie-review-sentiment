@@ -73,7 +73,7 @@ Lane ownership is recorded in [`docs/contributions.md`](docs/contributions.md).
 
 ### How the work is organized
 
-The build is a **linear pipeline of notebooks that hand off artifacts on disk.** Each notebook reads the previous step's saved outputs and writes the next step's inputs. Nothing is passed in memory between people; the files on disk *are* the contract. This is what lets three people work in parallel — a downstream lane loads saved artifacts instead of rerunning an upstream lane's expensive steps — and it enforces the fairness rules structurally: TF-IDF is fit once and saved (no leakage), and the test set lives in its own artifact read only on the final run.
+The build is a **linear pipeline of notebooks that hand off artifacts on disk.** Each notebook reads the previous step's saved outputs and writes the next step's inputs. Nothing is passed in memory between people; the files on disk *are* the contract. This is what lets three people work in parallel — a downstream lane loads saved artifacts instead of rerunning an upstream lane's expensive steps — and it enforces the fairness rules structurally: TF-IDF is fit once and saved (no leakage), the model notebooks never load the test split, and all test-set scoring happens exactly once, in the evaluation notebook.
 
 ```mermaid
 flowchart LR
@@ -90,14 +90,14 @@ flowchart LR
 
 | # | Notebook | Owner | Reads | Writes |
 |---|---|---|---|---|
-| 00 | `core` | **Team** | `stanfordnlp/imdb` | splits, fitted TF-IDF vectorizer, feature matrices |
+| 00 | `core` | **Team** | `stanfordnlp/imdb` | splits table + fitted TF-IDF vectorizer |
 | 01 | `eda` | T1 | splits | EDA figures + tables |
-| 02 | `logistic_regression` | T1 | matrices | LR predictions, coefficients, top-k results |
-| 03 | `neural_network` | T2 | matrices | NN predictions, training history |
-| 04 | `evaluation` | T2 | LR + NN predictions | metrics table, comparison figures, disagreement set |
-| 05 | `divergence_judge` | T3 | disagreement set | hard-case taxonomy, LLM adjudication table |
+| 02 | `logistic_regression` | T1 | fit + val features | LR model, val predictions, coefficients, top-k results |
+| 03 | `neural_network` | T2 | fit + val features | NN model, val predictions, training history |
+| 04 | `evaluation` | T2 | val predictions + saved models; test features on the final run only | test predictions (both models, one file), metrics table, comparison figures |
+| 05 | `divergence_judge` | T3 | predictions + splits (derives the disagreement set) | hard-case taxonomy, LLM adjudication table |
 
-All prediction files share one schema — `id, y_true, y_pred, y_proba_pos` — and join back to review text on `id`, so evaluation is model-agnostic and any notebook can rehydrate text from the splits.
+All prediction files share one schema — `id, y_true, y_pred, y_proba_pos` — and join back to review text on `id`, so evaluation is model-agnostic and any notebook can rehydrate text from the splits. Feature matrices are derived on the fly from the splits + vectorizer (via `shared.load_features`), never stored, so they can't go stale.
 
 ### Repository structure
 

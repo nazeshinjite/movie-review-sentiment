@@ -53,6 +53,16 @@ cp .env.example .env
 
 `.env` is gitignored — never commit a real key. Share a cloud key with the judge owner through a private channel, not GitHub. See `.env.example` for local (llama.cpp / LM Studio / Ollama) and cloud (OpenAI) examples.
 
+## How we collaborate in git
+
+Simple rules sized for a 3-person, 7-week project — notebooks merge badly, so we avoid merges instead of resolving them:
+
+- **Commit straight to `main`.** No branches or PRs; the review step is the round-robin lane review, not GitHub ceremony.
+- **`git pull` before every work session and before every push.**
+- **One notebook, one owner.** Never edit someone else's notebook — if you need a change in it, ask the owner (that is what the two weekly syncs and the group chat are for). This is what makes conflicts nearly impossible.
+- **Restart & Run All before committing a notebook**, so committed outputs match the committed code.
+- Shared files (`src/shared.py`, `docs/*`) change only after a team decision — log it in `docs/decisions.md`.
+
 ## Running the pipeline
 
 Run the notebooks **in order**:
@@ -78,3 +88,4 @@ uv run ruff format .
 - Notebooks must run clean top-to-bottom (Kernel → Restart & Run All).
 - Relative paths only (via the path constants in `src/shared.py`) — never hard-code an absolute path.
 - Clear noisy outputs before committing; keep figures that the paper references.
+- Notebooks 02 and 03 never load the test split. All test-set scoring happens once, in notebook 04, on the final run.
