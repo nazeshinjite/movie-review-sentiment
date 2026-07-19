@@ -25,7 +25,7 @@ Beyond raw accuracy, we examine *what the models learned*: the most influential 
 - Yesid Cardenas Marin
 - Ian Schmitt
 
-Lane ownership is recorded in [`docs/contributions.md`](docs/contributions.md).
+Lane ownership is recorded in [`docs/contributions.md`](docs/contributions.md); the full workload plan and calendar is [`docs/workload-plan.md`](docs/workload-plan.md).
 
 ## Methods Used
 
@@ -78,9 +78,9 @@ The build is a **linear pipeline of notebooks that hand off artifacts on disk.**
 ```mermaid
 flowchart LR
     HF[("stanfordnlp/imdb<br/>(Hugging Face)")] --> N0
-    N0["00 core<br/>(TEAM)<br/>split + TF-IDF"] --> N1["01 eda<br/>(T1)"]
-    N0 --> N2["02 logistic_regression<br/>(T1)"]
-    N0 --> N3["03 neural_network<br/>(T2)"]
+    N0["00 core<br/>(T1)<br/>split + TF-IDF"] --> N1["01 eda<br/>(T3)"]
+    N0 --> N2["02 logistic_regression<br/>(T2)"]
+    N0 --> N3["03 neural_network<br/>(T1)"]
     N2 --> N4["04 evaluation<br/>(T2)"]
     N3 --> N4
     N4 --> N5["05 divergence_judge<br/>(T3)"]
@@ -90,12 +90,14 @@ flowchart LR
 
 | # | Notebook | Owner | Reads | Writes |
 |---|---|---|---|---|
-| 00 | `core` | **Team** | `stanfordnlp/imdb` | splits table + fitted TF-IDF vectorizer |
-| 01 | `eda` | T1 | splits | EDA figures + tables |
-| 02 | `logistic_regression` | T1 | fit + val features | LR model, val predictions, coefficients, top-k results |
-| 03 | `neural_network` | T2 | fit + val features | NN model, val predictions, training history |
+| 00 | `core` | T1 | `stanfordnlp/imdb` | splits table + fitted TF-IDF vectorizer |
+| 01 | `eda` | T3 | splits | EDA figures + tables |
+| 02 | `logistic_regression` | T2 | fit + val features | LR model, val predictions, coefficients, top-k results |
+| 03 | `neural_network` | T1 | fit + val features | NN model, val predictions, training history |
 | 04 | `evaluation` | T2 | val predictions + saved models; test features on the final run only | test predictions (both models, one file), metrics table, comparison figures |
 | 05 | `divergence_judge` | T3 | predictions + splits (derives the disagreement set) | hard-case taxonomy, LLM adjudication table |
+
+Ownership is a 2/2/2 split: every member has one early-phase notebook (00/01/02) and one late-phase notebook (03/04/05), so contribution runs through the whole build. Lanes, calendar, and the report/presentation split live in [`docs/workload-plan.md`](docs/workload-plan.md).
 
 All prediction files share one schema — `id, y_true, y_pred, y_proba_pos` — and join back to review text on `id`, so evaluation is model-agnostic and any notebook can rehydrate text from the splits. Feature matrices are derived on the fly from the splits + vectorizer (via `shared.load_features`), never stored, so they can't go stale.
 

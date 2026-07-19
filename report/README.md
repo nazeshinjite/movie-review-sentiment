@@ -20,15 +20,18 @@ The final paper's home in the repo. The ~10-page APA 7 paper is the largest grad
 - An **appendix listing each member and their detailed contributions** (assembled from [`../docs/contributions.md`](../docs/contributions.md)).
 - AI-use disclosure (from [`../docs/ai-use-log.md`](../docs/ai-use-log.md)).
 
-## Section ownership (Lean plan)
+## Section ownership
+
+Sections follow notebook ownership — each member writes up what they built (full lanes and calendar: [`../docs/workload-plan.md`](../docs/workload-plan.md)):
 
 | Section | Owner |
 |---|---|
-| Introduction & related work | T3 |
-| Data & EDA | T1 |
-| Methods: preprocessing + LR | T1 |
-| Methods: NN + evaluation | T2 |
-| Results | T2 |
+| Introduction & related work | T1 |
+| Data & preprocessing | T1 |
+| EDA | T3 |
+| Methods: logistic regression (+ top-k) | T2 |
+| Methods: neural network | T1 |
+| Evaluation design + Results | T2 |
 | Divergence + LLM adjudicator | T3 |
 | Discussion, limitations, conclusion | T3 |
 | Appendix (contributions, AI disclosure) | All; T3 assembles |

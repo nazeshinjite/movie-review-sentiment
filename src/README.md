@@ -1,6 +1,6 @@
 # src — shared foundation
 
-One small module, **`shared.py`**, holding the plumbing every lane must agree on so the two-model comparison is fair and the paper's numbers regenerate identically. It is deliberately *not* a package — notebooks import it via a short path bootstrap (no install step). It is built with notebook 00 at kickoff.
+One small module, **`shared.py`**, holding the plumbing every lane must agree on so the two-model comparison is fair and the paper's numbers regenerate identically. It is deliberately *not* a package — notebooks import it via a short path bootstrap (no install step). It is built alongside notebook 00 — T1's early-phase deliverable and the first thing in the pipeline — with the shared constants reviewed by the whole team.
 
 Planned contents (values and rationale live in [`../docs/decisions.md`](../docs/decisions.md) — not duplicated here):
 

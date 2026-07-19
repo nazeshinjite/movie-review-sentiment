@@ -4,7 +4,7 @@ The settings every lane must agree on. These live in code in `src/shared.py`; th
 
 ## Authoritative plan
 
-`Lean-Workload-Plan.docx` is the single source of truth. The `Kimi Lean Workload Plan.docx` is **deprecated** and not used.
+[`workload-plan.md`](workload-plan.md) (in this folder) is the single source of truth for lanes, calendar, and the report/presentation split. It supersedes the pre-repo `Lean-Workload-Plan.docx` (which lives outside the repo); the `Kimi Lean Workload Plan.docx` remains deprecated.
 
 ## Decisions
 
@@ -30,3 +30,4 @@ The settings every lane must agree on. These live in code in `src/shared.py`; th
 |---|---|---|---|
 | 2026-07-19 | Initial decisions recorded from the Lean plan. | Team | — (baseline) |
 | 2026-07-19 | Handoff contract simplified after workflow review: matrices derived not stored; all test scoring moved into notebook 04; disagreements derived by 05 instead of exported. Pipeline handoff files reduced 14 → 5. | Ian (review with Claude Fable) | — (no code built yet) |
+| 2026-07-19 | Lanes rearranged to a 2/2/2 split (T1: 00+03, T2: 02+04, T3: 01+05) so every member ships one early-phase and one late-phase deliverable; non-code duties rebalanced to match. Workload plan moved into the repo as `workload-plan.md`, superseding the Lean docx. | Ian | — (no code built yet) |

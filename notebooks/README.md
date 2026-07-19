@@ -13,16 +13,16 @@ Notebooks do not exist yet; they are designed and built together, one at a time.
 
 ## Ownership
 
-| # | Notebook | Owner |
-|---|---|---|
-| 00 | `00_core.ipynb` | **Team** (built jointly at kickoff) |
-| 01 | `01_eda.ipynb` | Teammate 1 |
-| 02 | `02_logistic_regression.ipynb` | Teammate 1 |
-| 03 | `03_neural_network.ipynb` | Teammate 2 |
-| 04 | `04_evaluation.ipynb` | Teammate 2 |
-| 05 | `05_divergence_judge.ipynb` | Teammate 3 |
+| # | Notebook | Owner | Phase |
+|---|---|---|---|
+| 00 | `00_core.ipynb` | Teammate 1 | early |
+| 01 | `01_eda.ipynb` | Teammate 3 | early |
+| 02 | `02_logistic_regression.ipynb` | Teammate 2 | early |
+| 03 | `03_neural_network.ipynb` | Teammate 1 | late |
+| 04 | `04_evaluation.ipynb` | Teammate 2 | late |
+| 05 | `05_divergence_judge.ipynb` | Teammate 3 | late |
 
-The shared foundation (00) is team-owned on purpose: it is communal plumbing everyone depends on, so it should not sit inside one person's lane or block the others. Lanes map to the Lean workload plan (T1 = data + LR, T2 = NN + evaluation, T3 = analysis + judge + paper). See [`../docs/contributions.md`](../docs/contributions.md).
+Ownership is a deliberate 2/2/2 split that pairs one **early-phase** deliverable with one **late-phase** deliverable for every member (T1: 00 → 03, T2: 02 → 04, T3: 01 → 05), so each person ships in both halves of the build and contribution stays continuous and visible. Notebook 00 is everyone's dependency, so it is deliberately tiny (two artifacts), lands **first** on the calendar, and its shared constants are a team decision recorded in [`../docs/decisions.md`](../docs/decisions.md). Full lanes, calendar, and the report/presentation split: [`../docs/workload-plan.md`](../docs/workload-plan.md); the running contribution log is [`../docs/contributions.md`](../docs/contributions.md).
 
 ## Handoff contract
 
@@ -41,7 +41,7 @@ Two canonical artifacts anchor everything: **`data/processed/splits.parquet`** (
 
 Notes:
 - **`fit` vs `val` vs `test`.** `fit` (10,000) trains the models; `val` (5,000) tunes them; `test` (25,000) is scored exactly once. Notebooks 02 and 03 never load the test split — they end at a frozen model artifact plus validation predictions.
-- **The single final test run is notebook 04** (Jul 29 per the plan). It loads both frozen models, transforms the test set once, scores both models in one pass, and writes one combined `test_predictions.parquet`. Before that day, 04 is developed and validated entirely against the val prediction files.
+- **The single final test run is notebook 04** (Jul 29 per [`../docs/workload-plan.md`](../docs/workload-plan.md)). It loads both frozen models, transforms the test set once, scores both models in one pass, and writes one combined `test_predictions.parquet`. Before that day, 04 is developed and validated entirely against the val prediction files.
 - **Disagreements are derived, not stored.** A disagreement is `y_pred_lr != y_pred_nn` — notebook 05 computes it in one merge from the prediction files (val predictions for week-1 judge development, `test_predictions.parquet` after the final run) and rehydrates review text from `splits.parquet`.
 
 ## Import convention
