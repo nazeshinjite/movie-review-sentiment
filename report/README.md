@@ -22,11 +22,11 @@ The final paper's home in the repo. The ~10-page APA 7 paper is the largest grad
 
 ## Section ownership
 
-Sections follow notebook ownership — each member writes up what they built (T1 = Yesid Cardenas Marin, T2 = Keana Gindlesperger, T3 = Ian Schmitt; full lanes and calendar: [`../docs/workload-plan.md`](../docs/workload-plan.md)):
+Sections follow notebook ownership — each member writes up what they built (T1 = Keana Gindlesperger, T2 = Yesid Cardenas Marin, T3 = Ian Schmitt; full lanes and calendar: [`../docs/workload-plan.md`](../docs/workload-plan.md)):
 
 | Section | Owner |
 |---|---|
-| Introduction & related work | T1 |
+| Introduction & related work | T2 |
 | Data & preprocessing | T1 |
 | EDA | T3 |
 | Methods: logistic regression (+ top-k) | T2 |

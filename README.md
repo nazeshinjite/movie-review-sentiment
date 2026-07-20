@@ -21,8 +21,8 @@ Beyond raw accuracy, we examine *what the models learned*: the most influential 
 
 ## Contributors
 
-- **Yesid Cardenas Marin** (T1) — foundation + neural network
-- **Keana Gindlesperger** (T2) — logistic regression + evaluation
+- **Keana Gindlesperger** (T1) — foundation + neural network
+- **Yesid Cardenas Marin** (T2) — logistic regression + evaluation
 - **Ian Schmitt** (T3) — EDA + divergence/LLM judge
 
 Lane detail is recorded in [`docs/contributions.md`](docs/contributions.md); the full workload plan and calendar is [`docs/workload-plan.md`](docs/workload-plan.md).
