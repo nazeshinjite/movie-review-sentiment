@@ -85,10 +85,11 @@ It holds only settled, communal pieces: `SEED`, `PATHS` (never hard-code a path)
 - Relative paths only (via `PATHS` from `shared.py`). Clear noisy outputs before committing; keep the figures the paper references.
 - **Run the `notebook-reviewer` subagent before committing any notebook** (`.claude/agents/notebook-reviewer.md`) and clear its Blockers. It checks the invariants above, reproducibility, PEP 8, and — critical in a public repo — that no secret leaked into a cell or output.
 
-## Git workflow (sized for 3 people / 7 weeks)
+## Git workflow (PRs; sized for 3 people / 7 weeks)
 
-- **Commit straight to `main`.** No branches or PRs; review is the round-robin lane review, not GitHub ceremony.
-- **`git pull` before every work session and before every push.**
+- **Never push directly to `main` — it is branch-protected.** Branch (`<name>/<topic>`), push, open a PR; **at least one approval from another team member** merges it. Squash-merge, delete the branch, keep branches short-lived.
+- Before requesting review: Restart & Run All; run the `notebook-reviewer` subagent and clear its Blockers; verify no secret sits in any cell or output.
+- **`git pull` on `main` before branching and before every work session.**
 - Shared files (`src/shared.py`, `docs/*`) change only after a team decision logged in `docs/decisions.md`.
 
 ## What's committed vs. ignored

@@ -21,11 +21,11 @@ Beyond raw accuracy, we examine *what the models learned*: the most influential 
 
 ## Contributors
 
-- Keana Gindlesperger
-- Yesid Cardenas Marin
-- Ian Schmitt
+- **Yesid Cardenas Marin** (T1) — foundation + neural network
+- **Keana Gindlesperger** (T2) — logistic regression + evaluation
+- **Ian Schmitt** (T3) — EDA + divergence/LLM judge
 
-Lane ownership is recorded in [`docs/contributions.md`](docs/contributions.md); the full workload plan and calendar is [`docs/workload-plan.md`](docs/workload-plan.md).
+Lane detail is recorded in [`docs/contributions.md`](docs/contributions.md); the full workload plan and calendar is [`docs/workload-plan.md`](docs/workload-plan.md).
 
 ## Methods Used
 

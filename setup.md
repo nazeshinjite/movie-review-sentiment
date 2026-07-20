@@ -55,14 +55,15 @@ cp .env.example .env
 
 ## How we collaborate in git
 
-Simple rules sized for a 3-person, 7-week project — notebooks merge badly, so we avoid merges instead of resolving them:
+Pull-request workflow: **`main` is branch-protected — nothing lands without a PR approved by at least one other team member.** Notebooks merge badly, so the conflict defense stays structural: one notebook one owner, short-lived branches.
 
-- **Commit straight to `main`.** No branches or PRs; the review step is the round-robin lane review, not GitHub ceremony.
-- **`git pull` before every work session and before every push.**
+- **Branch, then PR.** Start from a fresh `main` (`git pull`), branch as `<name>/<topic>` (e.g. `ian/03-neural-network`), push, and open a PR (`gh pr create` or the web UI). Fill in the PR template's checklist.
+- **Review assignment.** Default reviewer is your round-robin partner — Yesid (T1) reviews Keana's (T2) PRs, Keana reviews Ian's (T3), Ian reviews Yesid's; if they're unavailable, anyone else approves. Review = pull the branch, run the notebook clean, sanity-check claims against outputs — not a rubber stamp.
+- **One approval merges.** Squash-merge (keeps `main` linear, one commit per PR — the PR itself preserves the detail), then delete the branch. Keep branches alive days, not weeks: long-lived notebook branches are how merge hell starts.
+- **Before requesting review:** Restart & Run All so outputs match code; run the bundled reviewer agent — open Claude Code at the repo root and ask it to *"use the notebook-reviewer agent on notebooks/0X_*.ipynb"* — and clear its Blockers; confirm no API key sits in any cell or output. Not a Claude Code user? `.claude/agents/notebook-reviewer.md` reads as a plain checklist — walk it manually.
 - **One notebook, one owner.** Never edit someone else's notebook — if you need a change in it, ask the owner (that is what the two weekly syncs and the group chat are for). This is what makes conflicts nearly impossible.
-- **Restart & Run All before committing a notebook**, so committed outputs match the committed code.
-- **Review before you push.** The repo bundles a Claude Code review agent: open Claude Code at the repo root and ask it to *"use the notebook-reviewer agent on notebooks/0X_*.ipynb"*. It checks reproducibility, the fairness invariants (test-split discipline, shared metrics), PEP 8, and that no API key leaked into a cell or output — and returns a prioritized fix list. Not a Claude Code user? `.claude/agents/notebook-reviewer.md` reads as a plain checklist — walk it manually.
-- Shared files (`src/shared.py`, `docs/*`) change only after a team decision — log it in `docs/decisions.md`.
+- Shared files (`src/shared.py`, `docs/*`) change only after a team decision — log it in `docs/decisions.md`; the PR approving the change is the paper trail.
+- **Emergency hatch:** the repo admin can push to `main` directly (protection exempts admins). Deadline emergencies only — announce it in the group chat when it happens.
 
 ## Running the pipeline
 

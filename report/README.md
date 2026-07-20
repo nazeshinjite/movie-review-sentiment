@@ -22,7 +22,7 @@ The final paper's home in the repo. The ~10-page APA 7 paper is the largest grad
 
 ## Section ownership
 
-Sections follow notebook ownership — each member writes up what they built (full lanes and calendar: [`../docs/workload-plan.md`](../docs/workload-plan.md)):
+Sections follow notebook ownership — each member writes up what they built (T1 = Yesid Cardenas Marin, T2 = Keana Gindlesperger, T3 = Ian Schmitt; full lanes and calendar: [`../docs/workload-plan.md`](../docs/workload-plan.md)):
 
 | Section | Owner |
 |---|---|

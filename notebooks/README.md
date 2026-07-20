@@ -15,12 +15,12 @@ Notebooks do not exist yet; they are designed and built together, one at a time.
 
 | # | Notebook | Owner | Phase |
 |---|---|---|---|
-| 00 | `00_core.ipynb` | Teammate 1 | early |
-| 01 | `01_eda.ipynb` | Teammate 3 | early |
-| 02 | `02_logistic_regression.ipynb` | Teammate 2 | early |
-| 03 | `03_neural_network.ipynb` | Teammate 1 | late |
-| 04 | `04_evaluation.ipynb` | Teammate 2 | late |
-| 05 | `05_divergence_judge.ipynb` | Teammate 3 | late |
+| 00 | `00_core.ipynb` | Yesid Cardenas Marin (T1) | early |
+| 01 | `01_eda.ipynb` | Ian Schmitt (T3) | early |
+| 02 | `02_logistic_regression.ipynb` | Keana Gindlesperger (T2) | early |
+| 03 | `03_neural_network.ipynb` | Yesid Cardenas Marin (T1) | late |
+| 04 | `04_evaluation.ipynb` | Keana Gindlesperger (T2) | late |
+| 05 | `05_divergence_judge.ipynb` | Ian Schmitt (T3) | late |
 
 Ownership is a deliberate 2/2/2 split that pairs one **early-phase** deliverable with one **late-phase** deliverable for every member (T1: 00 → 03, T2: 02 → 04, T3: 01 → 05), so each person ships in both halves of the build and contribution stays continuous and visible. Notebook 00 is everyone's dependency, so it is deliberately tiny (two artifacts), lands **first** on the calendar, and its shared constants are a team decision recorded in [`../docs/decisions.md`](../docs/decisions.md). Full lanes, calendar, and the report/presentation split: [`../docs/workload-plan.md`](../docs/workload-plan.md); the running contribution log is [`../docs/contributions.md`](../docs/contributions.md).
 
