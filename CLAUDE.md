@@ -42,7 +42,7 @@ The build is a **linear pipeline of six notebooks that hand off artifacts on dis
 | # | Notebook | Reads | Writes |
 |---|---|---|---|
 | 00 | `core` | `stanfordnlp/imdb` (Hugging Face) | `data/processed/splits.parquet`, `artifacts/tfidf_vectorizer.joblib` |
-| 01 | `eda` | `splits.parquet` | `outputs/figures/eda_*.png`, `outputs/tables/eda_*.csv` |
+| 01 | `eda` | `splits.parquet` | `outputs/figures/01-eda_*.png`, `outputs/tables/01-eda_*.csv` |
 | 02 | `logistic_regression` | `load_features("fit"/"val")` | `artifacts/logreg.joblib`, `outputs/predictions/lr_val.parquet`, LR coefficient + top-k tables |
 | 03 | `neural_network` | `load_features("fit"/"val")` | `artifacts/nn_model.keras`, `outputs/predictions/nn_val.parquet`, training history |
 | 04 | `evaluation` | val predictions + saved models; `load_features("test")` **on the final run only** | `outputs/predictions/test_predictions.parquet` (long, adds `model` col), metrics table, comparison figures |

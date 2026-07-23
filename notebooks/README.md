@@ -33,7 +33,7 @@ Two canonical artifacts anchor everything: **`data/processed/splits.parquet`** (
 | # | Notebook | Reads | Writes |
 |---|---|---|---|
 | **00** | `core` | `stanfordnlp/imdb` (Hugging Face) | `data/processed/splits.parquet`<br>`artifacts/tfidf_vectorizer.joblib` |
-| **01** | `eda` | `splits.parquet` | `outputs/figures/eda_*.png`<br>`outputs/tables/eda_*.csv` |
+| **01** | `eda` | `splits.parquet` | `outputs/figures/01-eda_*.png`<br>`outputs/tables/01-eda_*.csv` |
 | **02** | `logistic_regression` | `load_features("fit")`, `load_features("val")` | `artifacts/logreg.joblib`<br>`outputs/predictions/lr_val.parquet`<br>`outputs/tables/lr_top_coefficients.csv`<br>`outputs/tables/lr_topk_results.csv` (k = 50/100/500) |
 | **03** | `neural_network` | `load_features("fit")`, `load_features("val")` | `artifacts/nn_model.keras`<br>`outputs/predictions/nn_val.parquet`<br>`outputs/tables/nn_training_history.csv` |
 | **04** | `evaluation` | val predictions; saved models; `load_features("test")` **on the final run only** | `outputs/predictions/test_predictions.parquet` (long format: adds a `model` column)<br>`outputs/tables/metrics_comparison.csv`<br>`outputs/figures/{roc,confusion,comparison}_*.png` |
