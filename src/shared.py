@@ -258,16 +258,32 @@ def load_features(split: str,
     X = vec.transform(texts.values)
 
     # Normalize labels to 0/1 integers when possible (supports 'pos'/'neg' or 1/0)
-    raw_labels = df_split['label']
+    raw_labels = df_split["label"]
     if raw_labels.dtype == object:
-        # expect strings like 'pos'/'neg' or 'positive'/'negative'
         labels_lower = raw_labels.astype(str).str.lower()
-        y = labels_lower.map(lambda s: 1 if s.startswith('pos') else 0).astype(int)
+        valid_text_labels = labels_lower.str.startswith(("pos", "neg"))
+        if not valid_text_labels.all():
+            bad_values = sorted(raw_labels.loc[~valid_text_labels].astype(str).unique())
+            raise ValueError(
+                f"Invalid text labels found in split={split}: {bad_values}. "
+                "Expected positive/negative labels. Rerun notebook 00."
+            )
+        y = labels_lower.map(lambda s: 1 if s.startswith("pos") else 0).astype(int)
     else:
-        # numeric already
         y = raw_labels.astype(int)
 
-    ids = df_split['id'] if 'id' in df_split.columns else pd.Series(range(len(y)), name='id')
+    invalid_labels = set(y.unique()) - {0, 1}
+    if invalid_labels:
+        raise ValueError(
+            f"Invalid labels found in split={split}: {sorted(invalid_labels)}. "
+            "Expected only binary labels {0, 1}. Rerun notebook 00."
+        )
+
+    ids = (
+        df_split["id"]
+        if "id" in df_split.columns
+        else pd.Series(range(len(y)), name="id")
+    )
 
     if return_texts:
         return X, y.reset_index(drop=True), ids.reset_index(drop=True), texts.reset_index(drop=True)
