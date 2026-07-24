@@ -46,7 +46,7 @@ The build is a **linear pipeline of six notebooks that hand off artifacts on dis
 | 02 | `logistic_regression` | `load_features("fit"/"val")` | `artifacts/logreg.joblib`, `outputs/predictions/lr_val.parquet`, LR coefficient + top-k tables |
 | 03 | `neural_network` | `load_features("fit"/"val")` | `artifacts/nn_model.keras`, `outputs/predictions/nn_val.parquet`, training history |
 | 04 | `evaluation` | val predictions + saved models; `load_features("test")` **on the final run only** | `outputs/predictions/test_predictions.parquet` (long, adds `model` col), metrics table, comparison figures |
-| 05 | `divergence_judge` | prediction files + `splits.parquet` | adjudication table, disagreement taxonomy, judge figures |
+| 05 | `divergence_judge` | prediction files + `splits.parquet` + `data/golden/` | `outputs/tables/05-judge_*.csv`, `outputs/figures/05-judge_*.png` |
 
 **Two canonical artifacts anchor everything:** `data/processed/splits.parquet` (`id, text, label, split∈{fit,val,test}`) and `artifacts/tfidf_vectorizer.joblib`. Feature matrices are **derived, never stored** — every notebook calls `shared.load_features(split)`, which loads both and transforms on the fly (seconds), so matrices can't go stale against the vectorizer.
 

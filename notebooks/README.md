@@ -37,7 +37,7 @@ Two canonical artifacts anchor everything: **`data/processed/splits.parquet`** (
 | **02** | `logistic_regression` | `load_features("fit")`, `load_features("val")` | `artifacts/logreg.joblib`<br>`outputs/predictions/lr_val.parquet`<br>`outputs/tables/lr_top_coefficients.csv`<br>`outputs/tables/lr_topk_results.csv` (k = 50/100/500) |
 | **03** | `neural_network` | `load_features("fit")`, `load_features("val")` | `artifacts/nn_model.keras`<br>`outputs/predictions/nn_val.parquet`<br>`outputs/tables/nn_training_history.csv` |
 | **04** | `evaluation` | val predictions; saved models; `load_features("test")` **on the final run only** | `outputs/predictions/test_predictions.parquet` (long format: adds a `model` column)<br>`outputs/tables/metrics_comparison.csv`<br>`outputs/figures/{roc,confusion,comparison}_*.png` |
-| **05** | `divergence_judge` | prediction files + `splits.parquet` (for text) | `outputs/tables/adjudication.csv`<br>`outputs/tables/disagreement_taxonomy.csv`<br>`outputs/figures/judge_*.png` |
+| **05** | `divergence_judge` | prediction files + `splits.parquet` (for text) + `data/golden/golden_set.csv` | `outputs/tables/05-judge_*.csv`<br>`outputs/figures/05-judge_*.png` |
 
 Notes:
 - **`fit` vs `val` vs `test`.** `fit` (10,000) trains the models; `val` (5,000) tunes them; `test` (25,000) is scored exactly once. Notebooks 02 and 03 never load the test split — they end at a frozen model artifact plus validation predictions.
