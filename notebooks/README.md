@@ -2,7 +2,7 @@
 
 The project is built as a **linear sequence of notebooks that hand off artifacts on disk.** Each notebook reads the previous step's saved outputs and writes the inputs for the next. The files on disk are the contract between people — nothing is passed in memory. Run them **in order, 00 → 05.**
 
-Notebooks are built one at a time by their owners, so at any moment some of the six exist and some do not — run `ls` here and `gh pr list` to see which. This README is the spec each one implements, and it stays the contract whether or not the file exists yet.
+**00, 01, and 02 are merged**; 03, 04, and 05 are still being built one at a time by their owners — run `ls` here and `gh pr list` for the live picture. This README is the spec each notebook implements, and it stays the contract whether or not the file exists yet.
 
 **Output naming:** everything written to `outputs/` carries its notebook's number — `01-eda_*`, `02-lr_*`, `03-nn_*`, `04-eval_*`, `05-judge_*` — in `tables/`, `figures/`, and `predictions/` alike, so `outputs/` sorts in pipeline order and every file's producer is obvious. The canonical shared artifacts (`data/processed/splits.parquet`, `artifacts/*.joblib`, `artifacts/*.keras`) are **not** prefixed: every lane loads them by name and they belong to the pipeline rather than to one notebook.
 

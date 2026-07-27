@@ -10,7 +10,9 @@ It is a **3-person, 7-week course team project.** The design goal that shapes ev
 
 ## Current state
 
-`src/shared.py` and notebook `00_core` are **merged and live**: running 00 regenerates `data/processed/splits.parquet` and `artifacts/tfidf_vectorizer.joblib` in seconds. The remaining notebooks are built one at a time by their owners, so at any moment some exist and some do not.
+The first half of the pipeline is **merged and live** — `src/shared.py`, `00_core`, `01_eda`, and `02_logistic_regression`. Running 00 regenerates `data/processed/splits.parquet` and `artifacts/tfidf_vectorizer.joblib` in seconds; 01 and 02 then run against them and write their `outputs/`. The late-phase notebooks (`03_neural_network`, `04_evaluation`, `05_divergence_judge`) are still being built one at a time by their owners, so at any moment some exist and some do not.
+
+**Where that leaves a downstream lane:** `outputs/predictions/02-lr_val.parquet` exists, so 04 and 05 have one of the two prediction files they need. The other arrives with 03.
 
 **Check rather than assume** — this paragraph ages faster than the repo:
 
