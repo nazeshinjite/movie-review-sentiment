@@ -26,14 +26,22 @@ from __future__ import annotations
 
 import hashlib
 import re
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Tuple, Optional, Dict, Any, Iterable
+from typing import Any
 
-import pandas as pd
-import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
 import joblib
+import numpy as np
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    f1_score,
+    precision_score,
+    recall_score,
+    roc_auc_score,
+)
 
 # -----------------------------------------------------------------------------
 # Shared constants
@@ -43,7 +51,7 @@ SEED: int = 42
 # Repository layout: derive repo root from this file (src/shared.py)
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 
-PATHS: Dict[str, Path] = {
+PATHS: dict[str, Path] = {
     'repo_root': _REPO_ROOT,
     'data_processed_dir': _REPO_ROOT / 'data' / 'processed',
     'splits_parquet': _REPO_ROOT / 'data' / 'processed' / 'splits.parquet',
@@ -56,7 +64,7 @@ PATHS: Dict[str, Path] = {
 }
 
 # TF-IDF hyperparameters the pipeline agrees on (kept here for visibility)
-TFIDF_PARAMS: Dict[str, Any] = {
+TFIDF_PARAMS: dict[str, Any] = {
     'ngram_range': (1, 2),
     'min_df': 2,
     'max_features': 20000,
@@ -66,7 +74,7 @@ TFIDF_PARAMS: Dict[str, Any] = {
 }
 
 # Canonical split sizes (fit/val/test) as documented in docs/decisions.md
-SPLIT_SIZES: Dict[str, int] = {
+SPLIT_SIZES: dict[str, int] = {
     'fit': 10_000,
     'val': 5_000,
     'test': 25_000,
@@ -77,7 +85,7 @@ SPLIT_SIZES: Dict[str, int] = {
 # positional (fit-000123), so two machines producing different samples would
 # still produce colliding ids that point at different reviews. Notebook 00
 # asserts against these so that divergence is loud instead of silent.
-SPLIT_FINGERPRINTS: Dict[str, str] = {
+SPLIT_FINGERPRINTS: dict[str, str] = {
     'fit': 'a119c174af55823c',
     'val': 'f10ba2466b84170b',
     'test': '56278a6aa6fbfb16',
@@ -91,7 +99,7 @@ SPLIT_FINGERPRINTS: Dict[str, str] = {
 # divergence measured across team machines shifted feature columns enough to
 # collapse a transferred model from 0.90 to 0.63 accuracy. load_vectorizer()
 # verifies against these fingerprints on every load. See docs/decisions.md.
-VECTORIZER_FINGERPRINTS: Dict[str, str] = {
+VECTORIZER_FINGERPRINTS: dict[str, str] = {
     'vocabulary': '80562d8ff9c3ba88',
     'idf': 'a79cd1c524aa165b',
 }
@@ -109,7 +117,7 @@ def fingerprint_texts(texts: Iterable[str]) -> str:
     return h.hexdigest()[:16]
 
 
-def fingerprint_vectorizer(vec: TfidfVectorizer) -> Dict[str, str]:
+def fingerprint_vectorizer(vec: TfidfVectorizer) -> dict[str, str]:
     """Digest of a fitted vectorizer's vocabulary and IDF weights (16 hex each).
 
     The vocabulary hash is order-sensitive by design: feature columns are
@@ -134,19 +142,19 @@ PREDICTION_SCHEMA = ['id', 'y_true', 'y_pred', 'y_proba_pos']
 TOP_K_VALUES = [50, 100, 500]
 
 # Tuning budget limits (for documentation; notebooks enforce budgets separately)
-TUNING_BUDGETS: Dict[str, int] = {
+TUNING_BUDGETS: dict[str, int] = {
     'logreg_max_configs': 6,
     'nn_max_configs': 6,
 }
 
 # Preferred NN framework (Keras / fallback) — documented for reproducibility
-NN_FRAMEWORK: Dict[str, str] = {
+NN_FRAMEWORK: dict[str, str] = {
     'preferred': 'tensorflow.keras',
     'fallback': 'sklearn.neural_network.MLPClassifier',
 }
 
 # small matplotlib rcparams style dict (not exhaustive)
-PLOT_STYLE: Dict[str, Any] = {
+PLOT_STYLE: dict[str, Any] = {
     'figure.figsize': (8, 5),
     'axes.titlesize': 12,
     'axes.labelsize': 10,
@@ -233,8 +241,8 @@ def load_vectorizer(verify: bool = True) -> TfidfVectorizer:
 
 
 def fit_and_save_vectorizer(texts: Iterable[str],
-                            path: Optional[Path] = None,
-                            params: Optional[Dict[str, Any]] = None,
+                            path: Path | None = None,
+                            params: dict[str, Any] | None = None,
                             overwrite: bool = False) -> TfidfVectorizer:
     """Fit a TfidfVectorizer on provided texts and save the fitted object.
 
@@ -277,7 +285,7 @@ def fit_and_save_vectorizer(texts: Iterable[str],
 
 def load_features(split: str,
                   return_texts: bool = False,
-                  allow_test: bool = False) -> Tuple[Any, pd.Series, pd.Series]:
+                  allow_test: bool = False) -> tuple[Any, pd.Series, pd.Series]:
     """Load feature matrix and labels for a named split.
 
     Parameters
@@ -369,7 +377,7 @@ def load_features(split: str,
 
 def compute_metrics(y_true: pd.Series,
                     y_pred: pd.Series,
-                    y_proba_pos: Optional[np.ndarray] = None) -> Dict[str, Any]:
+                    y_proba_pos: np.ndarray | None = None) -> dict[str, Any]:
     """Compute standard metrics used by both classifiers.
 
     Returns a dictionary with keys:
@@ -407,6 +415,23 @@ def compute_metrics(y_true: pd.Series,
 
 # Public API
 __all__ = [
-    'SEED', 'PATHS', 'TFIDF_PARAMS', 'SPLIT_SIZES', 'SPLIT_FINGERPRINTS', 'VECTORIZER_FINGERPRINTS', 'PREDICTION_SCHEMA', 'TOP_K_VALUES', 'TUNING_BUDGETS', 'NN_FRAMEWORK', 'PLOT_STYLE',
-    'preprocess_text', 'load_splits', 'load_vectorizer', 'fit_and_save_vectorizer', 'load_features', 'compute_metrics', 'fingerprint_texts', 'fingerprint_vectorizer'
+    'NN_FRAMEWORK',
+    'PATHS',
+    'PLOT_STYLE',
+    'PREDICTION_SCHEMA',
+    'SEED',
+    'SPLIT_FINGERPRINTS',
+    'SPLIT_SIZES',
+    'TFIDF_PARAMS',
+    'TOP_K_VALUES',
+    'TUNING_BUDGETS',
+    'VECTORIZER_FINGERPRINTS',
+    'compute_metrics',
+    'fingerprint_texts',
+    'fingerprint_vectorizer',
+    'fit_and_save_vectorizer',
+    'load_features',
+    'load_splits',
+    'load_vectorizer',
+    'preprocess_text'
 ]
